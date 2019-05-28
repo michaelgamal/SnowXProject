@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import com.servicenow.entities.Item2D;
 import com.servicenow.entities.TargetItem;
 import com.servicenow.utiles.Finder;
@@ -18,31 +17,17 @@ public class SnowXApplication {
 
 		Item2D hpShip = getSampleItem("src/samples/HPShip.snw");
 		hpShip.setItemType("Ship");
-		
+
 		Item2D hbTorpedo = getSampleItem("src/samples/HPTorpedo.snw");
 		hbTorpedo.setItemType("Torpedo");
-		
-		Item2D testData = getSampleItem("src/samples/TestData.snw");
-	 
-		Finder finder = new Finder();
-		
-		finder.setAccuracy(0.6);
 
-		List<TargetItem> results = new ArrayList<>();
-		
-		results.addAll(finder.analyze(testData, hpShip));
-		results.addAll(finder.analyze(testData, hbTorpedo));
+		Item2D source = getSampleItem("src/samples/TestData.snw");
 
-		if (!results.isEmpty()) {
-			System.out.println("Found " + results.size() + " targets:");
-			results.stream().forEach(System.out::println);
-		} else {
-			System.out.println(" 0 Item Found");
-		}
+		SnowXApplication.startAnaysis(source, hpShip, hbTorpedo,0.6);
 	}
 
 	private static Item2D getSampleItem(String filePath) throws IOException {
-		
+
 		Path path = Paths.get(filePath);
 		List<String> lines = Files.lines(path).collect(Collectors.toList());
 
@@ -52,6 +37,26 @@ public class SnowXApplication {
 		}
 
 		return new Item2D(pixels);
+	}
+
+	public static void startAnaysis(Item2D source, Item2D hpShip, Item2D hbTorpedo, double accuracyLevel) throws IOException {
+
+		Finder finder = new Finder();
+
+		finder.setAccuracy(accuracyLevel);
+
+		List<TargetItem> results = new ArrayList<>();
+
+		results.addAll(finder.analyze(source, hpShip));
+		results.addAll(finder.analyze(source, hbTorpedo));
+
+		if (!results.isEmpty()) {
+			System.out.println("Found " + results.size() + " targets:");
+			results.stream().forEach(System.out::println);
+		} else {
+			System.out.println(" 0 Item Found");
+		}
+
 	}
 
 }
