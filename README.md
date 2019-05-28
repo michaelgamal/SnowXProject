@@ -13,8 +13,9 @@
   start to extract the found object (torbedo or ship)
 
 
-# The output of the application is system out line for each object found with the level 
-  confidence and the four point of the object boundaries as below:
+# The output of the application is system out line 
+
+For each object found with the level confidence and the four point of the object boundaries as below:
     
  " I am 63% sure that there is a Torpedo in the area between points [  ] "
 
